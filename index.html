@@ -1,307 +1,262 @@
-import React, { useState, useEffect } from 'react';
-import { Activity, Zap, Lock, Key, ExternalLink, AlertTriangle, RefreshCw, Crosshair, Terminal } from 'lucide-react';
-
-export default function KrakenPredictorFull() {
-  // --- Состояния Авторизации (Гейта) ---
-  const [isVerified, setIsVerified] = useState(false);
-  const [isVerifying, setIsVerifying] = useState(false);
-  const [userId, setUserId] = useState('');
-  const [verificationError, setVerificationError] = useState('');
-
-  // --- Состояния Предиктора ---
-  const [isConnected, setIsConnected] = useState(false);
-  const [isConnecting, setIsConnecting] = useState(false);
-  const [game, setGame] = useState('MINES');
-  const [isAnalyzing, setIsAnalyzing] = useState(false);
-  const [signal, setSignal] = useState(null);
-  const [logs, setLogs] = useState(['[SYSTEM] KRAKEN AI Core Initialized...']);
-
-  // ВАША ССЫЛКА (Замените на свою)
-  const AFFILIATE_LINK = "https://your-affiliate-link.com/register";
-
-  const addLog = (msg) => {
-    setLogs(prev => [...prev, `[${new Date().toLocaleTimeString()}] ${msg}`].slice(-5));
-  };
-
-  // Логика проверки ID (Гейт)
-  const handleVerify = () => {
-    if (userId.length < 5) {
-      setVerificationError('Ошибка: Неверный формат ID (минимум 5 цифр)');
-      return;
-    }
-    setIsVerifying(true);
-    setVerificationError('');
-    
-    setTimeout(() => {
-      // Имитация проверки по базе
-      if (userId.startsWith('000')) {
-        setVerificationError('Ошибка: ID не найден в базе новых регистраций.');
-        setIsVerifying(false);
-      } else {
-        setIsVerified(true);
-        setIsVerifying(false);
-        addLog('User verification successful. Access granted.');
-      }
-    }, 2500);
-  };
-
-  // Логика подключения к серверу
-  const handleConnect = () => {
-    setIsConnecting(true);
-    addLog('Connecting to casino socket servers...');
-    setTimeout(() => {
-      addLog('Bypassing SSL encryption...');
-      setTimeout(() => {
-        setIsConnected(true);
-        setIsConnecting(false);
-        addLog('CONNECTED. Ready to intercept hashes.');
-      }, 1500);
-    }, 1500);
-  };
-
-  // Логика генерации сигнала
-  const getSignal = () => {
-    setIsAnalyzing(true);
-    setSignal(null);
-    addLog(`Targeting game: ${game}...`);
-    addLog('Decrypting next round SHA-256 hash...');
-
-    setTimeout(() => {
-      let result;
-      if (game === 'MINES') {
-        // Генерируем 3-5 безопасных клеток на поле 5x5
-        const safeSpots = [];
-        const numSpots = Math.floor(Math.random() * 3) + 3;
-        while(safeSpots.length < numSpots) {
-          const r = Math.floor(Math.random() * 25);
-          if(!safeSpots.includes(r)) safeSpots.push(r);
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KRAKEN AI - EXPLOIT HUB</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
         }
-        result = { type: 'grid', data: safeSpots };
-        addLog('Mines algorithm bypassed. Map generated.');
-      } else if (game === 'AVIATOR') {
-        // Генерируем случайный множитель
-        const multiplier = (Math.random() * (5.5 - 1.2) + 1.2).toFixed(2);
-        result = { type: 'multiplier', data: `${multiplier}x` };
-        addLog(`Crash predicted at ${multiplier}x.`);
-      } else if (game === 'APPLE') {
-        // Генерируем путь для яблочек (1 из 5 в каждом из 4 рядов)
-        const path = [
-          Math.floor(Math.random() * 5),
-          Math.floor(Math.random() * 5),
-          Math.floor(Math.random() * 5),
-          Math.floor(Math.random() * 5)
-        ];
-        result = { type: 'path', data: path };
-        addLog('Apple of Fortune pattern injected.');
-      }
-      
-      setSignal(result);
-      setIsAnalyzing(false);
-    }, 3000);
-  };
+        .animate-fade-in {
+            animation: fadeIn 0.4s ease-out forwards;
+        }
+        @keyframes pulse-red {
+            0%, 100% { box-shadow: 0 0 10px rgba(239, 68, 68, 0.4); }
+            50% { box-shadow: 0 0 20px rgba(239, 68, 68, 0.8); }
+        }
+        .error-glow {
+            animation: pulse-red 2s infinite;
+        }
+    </style>
+</head>
+<body class="bg-black text-zinc-300 font-sans min-h-screen flex flex-col items-center p-4">
 
-  // Рендер экрана Гейта (Регистрации)
-  if (!isVerified) {
-    return (
-      <div className="min-h-screen bg-black text-zinc-300 font-sans p-4 flex flex-col items-center justify-center">
-        <div className="max-w-md w-full bg-zinc-950 border border-zinc-800 rounded-xl p-6 shadow-2xl relative overflow-hidden">
-          <div className="absolute top-0 left-0 w-full h-1 bg-red-600"></div>
-          
-          <div className="flex flex-col items-center text-center mb-6">
-            <Lock className="w-12 h-12 text-red-500 mb-3" />
-            <h1 className="text-3xl font-black text-white tracking-tighter mb-1">ДОСТУП ЗАКРЫТ</h1>
-            <p className="text-xs font-mono text-zinc-500">ТРЕБУЕТСЯ ВЕРИФИКАЦИЯ АККАУНТА</p>
-          </div>
-
-          <div className="space-y-5 mb-6">
-            <div className="bg-red-950/20 border border-red-900/50 rounded-lg p-4">
-              <p className="text-xs text-zinc-400 leading-relaxed font-mono">
-                Система <span className="text-white font-bold">KRAKEN AI</span> работает только с <span className="text-white font-bold">НОВЫМИ</span> аккаунтами. 
-                Нам нужна чистая история профиля для успешного обхода Anti-Fraud систем казино.
-              </p>
-            </div>
-
-            <div className="space-y-2">
-              <p className="text-[11px] font-bold text-white uppercase tracking-wider">Шаг 1: Создайте аккаунт</p>
-              <a 
-                href={AFFILIATE_LINK} 
-                target="_blank"
-                rel="noreferrer"
-                className="w-full bg-blue-600 hover:bg-blue-500 text-white py-4 rounded-lg font-bold text-sm flex items-center justify-center gap-2 transition-all shadow-[0_0_15px_rgba(37,99,235,0.4)]"
-              >
-                РЕГИСТРАЦИЯ <ExternalLink className="w-4 h-4" />
-              </a>
-              <p className="text-[10px] text-zinc-500 text-center">Используйте промокод KRAKEN при регистрации для бонуса</p>
-            </div>
-
-            <div className="space-y-2 pt-4 border-t border-zinc-800/80">
-              <p className="text-[11px] font-bold text-white uppercase tracking-wider">Шаг 2: Введите ваш новый ID</p>
-              <input 
-                type="text" 
-                placeholder="Например: 8472911"
-                value={userId}
-                onChange={(e) => setUserId(e.target.value)}
-                className="w-full bg-zinc-900 border border-zinc-700 text-white rounded-lg p-4 outline-none focus:border-red-500 transition-colors font-mono text-center text-lg tracking-widest"
-              />
-              {verificationError && <p className="text-xs text-red-500 text-center mt-2 font-mono">{verificationError}</p>}
-            </div>
-          </div>
-
-          <button 
-            onClick={handleVerify}
-            disabled={isVerifying || userId.length === 0}
-            className="w-full bg-white text-black hover:bg-zinc-200 disabled:bg-zinc-800 disabled:text-zinc-500 py-4 rounded-lg font-bold text-sm tracking-wider uppercase transition-all duration-300 flex items-center justify-center gap-2"
-          >
-            {isVerifying ? (
-              <><Activity className="w-5 h-5 animate-spin" /> ПРОВЕРКА В БАЗЕ...</>
-            ) : (
-              <><Key className="w-5 h-5" /> АВТОРИЗОВАТЬСЯ</>
-            )}
-          </button>
-        </div>
-      </div>
-    );
-  }
-
-  // Рендер Основного Интерфейса (После авторизации)
-  return (
-    <div className="min-h-screen bg-black text-zinc-300 font-sans p-4 md:p-8 flex flex-col items-center">
-      
-      {/* Шапка */}
-      <div className="max-w-2xl w-full flex items-center justify-between mb-8 border-b border-zinc-800 pb-4">
-        <div>
-          <h1 className="text-2xl font-black text-white tracking-tighter">KRAKEN EXPLOIT</h1>
-          <p className="text-[10px] font-mono text-zinc-500">ID: {userId} | STATUS: AUTHORIZED</p>
-        </div>
-        {!isConnected ? (
-          <button 
-            onClick={handleConnect}
-            disabled={isConnecting}
-            className="bg-red-600 hover:bg-red-500 text-white px-6 py-2 rounded font-bold text-xs tracking-widest uppercase transition-colors flex items-center gap-2"
-          >
-            {isConnecting ? <Activity className="w-4 h-4 animate-spin"/> : 'CONNECT'}
-          </button>
-        ) : (
-          <div className="bg-green-500/10 text-green-500 border border-green-500/30 px-4 py-2 rounded font-mono text-xs flex items-center gap-2">
-            <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
-            CONNECTED
-          </div>
-        )}
-      </div>
-
-      {/* Основной блок */}
-      <div className="max-w-2xl w-full grid grid-cols-1 md:grid-cols-2 gap-6 relative">
-        
-        {/* Оверлей блокировки если не подключен */}
-        {!isConnected && (
-          <div className="absolute inset-0 z-10 bg-black/80 backdrop-blur-sm flex items-center justify-center rounded-xl border border-zinc-800">
-            <p className="font-mono text-sm text-zinc-400 animate-pulse">ОЖИДАНИЕ ПОДКЛЮЧЕНИЯ К СЕРВЕРУ...</p>
-          </div>
-        )}
-
-        {/* Левая колонка - Управление */}
-        <div className="bg-zinc-950 border border-zinc-800 rounded-xl p-5">
-          <div className="mb-6">
-            <label className="block text-xs text-zinc-500 mb-2 uppercase font-mono">Выбор алгоритма</label>
-            <div className="grid grid-cols-1 gap-2">
-              {['MINES', 'AVIATOR', 'APPLE'].map(g => (
-                <button
-                  key={g}
-                  onClick={() => setGame(g)}
-                  className={`p-3 text-left font-mono text-sm rounded border ${game === g ? 'bg-white text-black border-white' : 'bg-zinc-900 text-zinc-400 border-zinc-800 hover:border-zinc-600'}`}
-                >
-                  {g}
-                </button>
-              ))}
-            </div>
-          </div>
-
-          <button 
-            onClick={getSignal}
-            disabled={isAnalyzing || !isConnected}
-            className="w-full bg-blue-600 hover:bg-blue-500 disabled:bg-zinc-800 disabled:text-zinc-600 text-white py-4 rounded font-bold text-sm tracking-wider uppercase transition-all flex items-center justify-center gap-2"
-          >
-            {isAnalyzing ? <RefreshCw className="w-4 h-4 animate-spin"/> : <Crosshair className="w-4 h-4"/>}
-            {isAnalyzing ? 'ВЗЛОМ ХЭША...' : 'ПОЛУЧИТЬ СИГНАЛ'}
-          </button>
+    <!-- VIEW 1: LANDING PAGE -->
+    <div id="view-landing" class="flex-1 w-full max-w-xl flex flex-col items-center justify-center animate-fade-in">
+        <div class="text-center mb-10">
+            <h1 class="text-5xl font-black text-white tracking-tighter mb-2">KRAKEN <span class="text-blue-500">AI</span></h1>
+            <p class="text-sm font-mono text-zinc-500 uppercase tracking-widest">Prediction & Exploit System v2.4</p>
         </div>
 
-        {/* Правая колонка - Результат */}
-        <div className="bg-zinc-950 border border-zinc-800 rounded-xl p-5 flex flex-col items-center justify-center min-h-[300px] relative overflow-hidden">
-          
-          {!signal && !isAnalyzing && (
-            <div className="opacity-20 text-center">
-              <Zap className="w-16 h-16 mx-auto mb-2" />
-              <p className="font-mono text-xs">AWAITING COMMAND</p>
-            </div>
-          )}
-
-          {isAnalyzing && (
-            <div className="text-center font-mono space-y-4">
-              <div className="w-16 h-16 border-4 border-blue-500/30 border-t-blue-500 rounded-full animate-spin mx-auto"></div>
-              <p className="text-blue-500 text-xs">DECRYPTING...</p>
-            </div>
-          )}
-
-          {signal && !isAnalyzing && (
-            <div className="w-full animate-[fadeIn_0.3s_ease-out] flex flex-col items-center">
-              <p className="text-[10px] text-zinc-500 font-mono mb-4">SUCCESS: SIGNAL GENERATED</p>
-              
-              {/* Рендер результата в зависимости от игры */}
-              {game === 'AVIATOR' && (
-                <div className="text-center">
-                  <p className="text-xs text-zinc-400 mb-1">ЗАБИРАЙТЕ НА:</p>
-                  <h2 className="text-6xl font-black text-blue-500">{signal.data}</h2>
-                </div>
-              )}
-
-              {game === 'MINES' && (
-                <div className="grid grid-cols-5 gap-1 w-full max-w-[200px]">
-                  {Array.from({length: 25}).map((_, i) => (
-                    <div 
-                      key={i} 
-                      className={`aspect-square rounded flex items-center justify-center ${signal.data.includes(i) ? 'bg-blue-500' : 'bg-zinc-900 border border-zinc-800'}`}
-                    >
-                      {signal.data.includes(i) && <div className="w-2 h-2 bg-white rounded-full shadow-[0_0_8px_white]"></div>}
-                    </div>
-                  ))}
-                </div>
-              )}
-
-              {game === 'APPLE' && (
-                <div className="flex flex-col gap-1 w-full max-w-[200px]">
-                  {signal.data.map((colIndex, row) => (
-                    <div key={row} className="grid grid-cols-5 gap-1">
-                      {Array.from({length: 5}).map((_, col) => (
-                        <div 
-                          key={col} 
-                          className={`aspect-square rounded flex items-center justify-center ${colIndex === col ? 'bg-green-500' : 'bg-zinc-900 border border-zinc-800'}`}
-                        >
-                          {colIndex === col && <div className="w-2 h-2 bg-white rounded-full"></div>}
-                        </div>
-                      ))}
-                    </div>
-                  )).reverse()}
-                </div>
-              )}
-            </div>
-          )}
+        <div class="bg-zinc-950 border border-zinc-800 rounded-xl p-8 shadow-2xl w-full text-center">
+            <h2 class="text-xl font-bold text-white mb-4">ВЗЛОМ АЛГОРИТМОВ КАЗИНО</h2>
+            <p class="text-sm text-zinc-400 mb-8 leading-relaxed">
+                Нейросеть KRAKEN анализирует хэши RNG-серверов в реальном времени и выдает прогнозы с точностью до 96.4%. Выберите игру и начните зарабатывать прямо сейчас.
+            </p>
+            
+            <button id="btn-start" class="w-full bg-blue-600 hover:bg-blue-500 text-white py-4 rounded-lg font-bold text-lg tracking-wider uppercase transition-all shadow-[0_0_20px_rgba(37,99,235,0.4)] flex items-center justify-center gap-2">
+                НАЧАТЬ ЗАРАБАТЫВАТЬ
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+            </button>
         </div>
-      </div>
-
-      {/* Логи терминала */}
-      <div className="max-w-2xl w-full mt-6 bg-black border border-zinc-900 rounded p-4 font-mono text-[10px]">
-        <div className="flex items-center gap-2 text-zinc-500 mb-2 pb-2 border-b border-zinc-900">
-          <Terminal className="w-3 h-3" />
-          <span>TERMINAL LOGS</span>
-        </div>
-        <div className="space-y-1">
-          {logs.map((log, i) => (
-            <p key={i} className="text-green-500/70">{log}</p>
-          ))}
-        </div>
-      </div>
-
     </div>
-  );
-}
+
+    <!-- VIEW 2: GAME SELECTION & PREDICTION (MAIN) -->
+    <div id="view-main" class="hidden w-full max-w-xl flex-col items-center pt-8 pb-20 animate-fade-in">
+        
+        <!-- Header -->
+        <div class="w-full flex items-center justify-between mb-8 pb-4 border-b border-zinc-800">
+            <div class="flex items-center gap-2">
+                <span class="w-2 h-2 bg-green-500 rounded-full animate-pulse"></span>
+                <span class="text-xs font-mono font-bold text-green-500">SYSTEM ONLINE</span>
+            </div>
+            <p class="text-[10px] font-mono text-zinc-500">SESSION: 0x8F2A...B19</p>
+        </div>
+
+        <!-- Выбор игры -->
+        <h3 class="text-xs font-mono text-zinc-500 uppercase tracking-wider w-full mb-3 text-left">Шаг 1: Выберите цель</h3>
+        <div class="grid grid-cols-3 gap-3 w-full mb-8">
+            <button data-game="MINES" class="game-btn aspect-square bg-zinc-900 border border-zinc-700 hover:border-blue-500 rounded-xl flex flex-col items-center justify-center gap-2 transition-all group">
+                <div class="w-8 h-8 rounded bg-blue-500/20 text-blue-500 flex items-center justify-center group-hover:scale-110 transition-transform">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"></path></svg>
+                </div>
+                <span class="font-bold text-xs">MINES</span>
+            </button>
+            <button data-game="AVIATOR" class="game-btn aspect-square bg-zinc-900 border border-zinc-700 hover:border-red-500 rounded-xl flex flex-col items-center justify-center gap-2 transition-all group">
+                <div class="w-8 h-8 rounded bg-red-500/20 text-red-500 flex items-center justify-center group-hover:scale-110 transition-transform">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"></path></svg>
+                </div>
+                <span class="font-bold text-xs">AVIATOR</span>
+            </button>
+            <button data-game="APPLE" class="game-btn aspect-square bg-zinc-900 border border-zinc-700 hover:border-green-500 rounded-xl flex flex-col items-center justify-center gap-2 transition-all group">
+                <div class="w-8 h-8 rounded bg-green-500/20 text-green-500 flex items-center justify-center group-hover:scale-110 transition-transform">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 6l3 1m0 0l-3 9a5.002 5.002 0 006.001 0M6 7l3 9M6 7l6-2m6 2l3-1m-3 1l-3 9a5.002 5.002 0 006.001 0M18 7l3 9m-3-9l-6-2m0-2v2m0 16V5m0 16H9m3 0h3"></path></svg>
+                </div>
+                <span class="font-bold text-xs text-center leading-tight">APPLE OF<br>FORTUNE</span>
+            </button>
+        </div>
+
+        <!-- Окно предикора -->
+        <div class="w-full bg-zinc-950 border border-zinc-800 rounded-xl p-6 shadow-xl relative overflow-hidden mb-6 min-h-[250px] flex flex-col items-center justify-center">
+            
+            <div id="status-wait-game" class="text-center opacity-30">
+                <svg class="w-12 h-12 mx-auto mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 15l-2 5L9 9l11 4-5 2zm0 0l5 5M7.188 2.239l.777 2.897M5.136 7.965l-2.898-.777M13.95 4.05l-2.122 2.122m-5.657 5.656l-2.12 2.122"></path></svg>
+                <p class="font-mono text-xs uppercase tracking-widest">Выберите игру выше</p>
+            </div>
+
+            <!-- Блок с ошибкой (ГЕЙТ) -->
+            <div id="status-error" class="hidden w-full h-full absolute inset-0 bg-zinc-950 flex flex-col items-center justify-center p-6 animate-fade-in z-20">
+                <div class="w-16 h-16 bg-red-500/10 rounded-full flex items-center justify-center mb-4 error-glow">
+                    <svg class="w-8 h-8 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
+                </div>
+                <h3 class="text-xl font-bold text-white mb-2">ОШИБКА 404: ИГРОК НЕ НАЙДЕН</h3>
+                <p class="text-xs text-zinc-400 text-center mb-6 max-w-xs font-mono leading-relaxed">
+                    Нейросеть не может подключиться к вашему игровому аккаунту. <br><br>
+                    <span class="text-white">Мы работаем только с новыми аккаунтами для обхода Anti-Fraud системы казино.</span>
+                </p>
+                <button id="btn-show-register" class="bg-white text-black hover:bg-zinc-200 py-3 px-6 rounded font-bold text-sm uppercase tracking-wider transition-colors w-full max-w-xs">
+                    СОЗДАТЬ НОВЫЙ АККАУНТ
+                </button>
+            </div>
+
+        </div>
+
+        <button id="btn-get-signal" class="w-full bg-blue-600 hover:bg-blue-500 text-white py-4 rounded-lg font-bold text-sm tracking-wider uppercase transition-all flex items-center justify-center gap-2 opacity-50 cursor-not-allowed" disabled>
+            <svg id="icon-spin" class="w-5 h-5 animate-spin hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path></svg>
+            <span id="text-btn-signal">ПОЛУЧИТЬ ПРОГНОЗ</span>
+        </button>
+    </div>
+
+    <!-- VIEW 3: MODAL REGISTER (Появляется поверх) -->
+    <div id="modal-register" class="fixed inset-0 bg-black/90 backdrop-blur-sm z-50 hidden flex-col items-center justify-center p-4 animate-fade-in">
+        <div class="bg-zinc-950 border border-zinc-800 rounded-2xl p-6 w-full max-w-md shadow-2xl relative">
+            
+            <div class="text-center mb-6">
+                <div class="w-12 h-12 bg-blue-500/20 text-blue-500 rounded-full flex items-center justify-center mx-auto mb-3">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z"></path></svg>
+                </div>
+                <h3 class="text-2xl font-black text-white">ВЕРИФИКАЦИЯ</h3>
+                <p class="text-xs text-zinc-500 font-mono mt-1">ШАГ 1: РЕГИСТРАЦИЯ</p>
+            </div>
+
+            <div class="space-y-4 mb-6">
+                <div class="bg-zinc-900 border border-zinc-800 rounded-lg p-4 text-xs text-zinc-400 font-mono leading-relaxed">
+                    1. Зарегистрируйте <span class="text-white font-bold">НОВЫЙ</span> аккаунт по ссылке ниже.<br>
+                    2. Введите промокод <span class="text-blue-400 font-bold">KRAKEN</span>.<br>
+                    3. Скопируйте свой новый ID.
+                </div>
+                
+                <a href="https://your-affiliate-link.com/register" target="_blank" rel="noreferrer" class="w-full bg-blue-600 hover:bg-blue-500 text-white py-4 rounded-lg font-bold text-sm flex items-center justify-center gap-2 transition-all shadow-[0_0_15px_rgba(37,99,235,0.4)]">
+                    ПЕРЕЙТИ К РЕГИСТРАЦИИ
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path></svg>
+                </a>
+            </div>
+
+            <div class="border-t border-zinc-800 pt-4">
+                <p class="text-[10px] text-zinc-500 font-mono uppercase mb-2">Уже зарегистрировались?</p>
+                <input type="text" id="input-id" placeholder="Введите ваш новый ID" class="w-full bg-black border border-zinc-800 text-white rounded-lg p-3 outline-none focus:border-blue-500 transition-colors font-mono text-center mb-3">
+                <p id="error-msg" class="text-xs text-red-500 text-center font-mono hidden mb-3"></p>
+                <button id="btn-verify-id" class="w-full bg-white text-black hover:bg-zinc-200 py-3 rounded font-bold text-sm uppercase tracking-wider transition-colors">
+                    ПРОВЕРИТЬ ID И НАЧАТЬ
+                </button>
+            </div>
+            
+            <button id="btn-close-modal" class="absolute top-4 right-4 text-zinc-500 hover:text-white">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+            </button>
+        </div>
+    </div>
+
+    <script>
+        // Элементы
+        const viewLanding = document.getElementById('view-landing');
+        const viewMain = document.getElementById('view-main');
+        const modalRegister = document.getElementById('modal-register');
+        
+        const btnStart = document.getElementById('btn-start');
+        const gameBtns = document.querySelectorAll('.game-btn');
+        const btnGetSignal = document.getElementById('btn-get-signal');
+        
+        const statusWaitGame = document.getElementById('status-wait-game');
+        const statusError = document.getElementById('status-error');
+        
+        const btnShowRegister = document.getElementById('btn-show-register');
+        const btnCloseModal = document.getElementById('btn-close-modal');
+        const btnVerifyId = document.getElementById('btn-verify-id');
+        const inputId = document.getElementById('input-id');
+        const errorMsg = document.getElementById('error-msg');
+
+        let selectedGame = null;
+
+        // Переход с лендинга на дашборд
+        btnStart.addEventListener('click', () => {
+            viewLanding.classList.add('hidden');
+            viewMain.classList.remove('hidden');
+            viewMain.classList.add('flex');
+        });
+
+        // Выбор игры
+        gameBtns.forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                // Сброс стилей всех кнопок
+                gameBtns.forEach(b => {
+                    b.classList.remove('bg-zinc-800', 'border-white');
+                    b.classList.add('bg-zinc-900', 'border-zinc-700');
+                });
+                
+                // Активный стиль для нажатой
+                const currentBtn = e.currentTarget;
+                currentBtn.classList.remove('bg-zinc-900', 'border-zinc-700');
+                currentBtn.classList.add('bg-zinc-800', 'border-white');
+
+                selectedGame = currentBtn.getAttribute('data-game');
+                
+                // Активируем кнопку прогноза
+                btnGetSignal.disabled = false;
+                btnGetSignal.classList.remove('opacity-50', 'cursor-not-allowed');
+                
+                // Убираем текст "выберите игру"
+                statusWaitGame.classList.add('hidden');
+                statusError.classList.add('hidden'); // прячем ошибку, если была
+            });
+        });
+
+        // Нажатие на "ПОЛУЧИТЬ ПРОГНОЗ"
+        btnGetSignal.addEventListener('click', () => {
+            if(!selectedGame) return;
+
+            // Анимация загрузки на кнопке
+            const textBtn = document.getElementById('text-btn-signal');
+            const iconSpin = document.getElementById('icon-spin');
+            
+            btnGetSignal.disabled = true;
+            textBtn.textContent = 'СИНХРОНИЗАЦИЯ...';
+            iconSpin.classList.remove('hidden');
+
+            // Имитация работы 1.5 секунды, затем вылет ОШИБКИ
+            setTimeout(() => {
+                btnGetSignal.classList.add('hidden'); // Прячем кнопку вообще
+                statusError.classList.remove('hidden'); // Показываем ГЕЙТ
+            }, 1500);
+        });
+
+        // Открытие модалки регистрации
+        btnShowRegister.addEventListener('click', () => {
+            modalRegister.classList.remove('hidden');
+            modalRegister.classList.add('flex');
+        });
+
+        // Закрытие модалки
+        btnCloseModal.addEventListener('click', () => {
+            modalRegister.classList.add('hidden');
+            modalRegister.classList.remove('flex');
+        });
+
+        // Попытка проверки ID
+        btnVerifyId.addEventListener('click', () => {
+            const val = inputId.value.trim();
+            if(val.length < 5) {
+                errorMsg.textContent = 'Неверный ID. Попробуйте еще раз.';
+                errorMsg.classList.remove('hidden');
+                return;
+            }
+            
+            btnVerifyId.disabled = true;
+            btnVerifyId.textContent = 'ПРОВЕРКА...';
+            errorMsg.classList.add('hidden');
+
+            // Имитация отказа для нагнетания :)
+            setTimeout(() => {
+                errorMsg.innerHTML = 'ВНИМАНИЕ: Данный ID не найден в базе <span class="font-bold">НОВЫХ</span> регистраций.<br>Обязательно зарегистрируйте новый аккаунт по ссылке выше.';
+                errorMsg.classList.remove('hidden');
+                btnVerifyId.disabled = false;
+                btnVerifyId.textContent = 'ПРОВЕРИТЬ ID И НАЧАТЬ';
+            }, 2000);
+        });
+
+    </script>
+</body>
+</html>
