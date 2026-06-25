@@ -20,6 +20,34 @@
         .error-glow {
             animation: pulse-red 2s infinite;
         }
+        /* Стили для красивых кнопок игр */
+        .game-btn {
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+        .game-btn::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: linear-gradient(180deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0) 100%);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        .game-btn:hover::before {
+            opacity: 1;
+        }
+        .game-btn.active {
+            border-color: white;
+            box-shadow: 0 0 15px rgba(255,255,255,0.2);
+            transform: translateY(-2px);
+        }
+        .game-btn img {
+            transition: transform 0.3s ease;
+        }
+        .game-btn:hover img {
+            transform: scale(1.05);
+        }
     </style>
 </head>
 <body class="bg-black text-zinc-300 font-sans min-h-screen flex flex-col items-center p-4">
@@ -31,15 +59,18 @@
             <p class="text-sm font-mono text-zinc-500 uppercase tracking-widest">Prediction & Exploit System v2.4</p>
         </div>
 
-        <div class="bg-zinc-950 border border-zinc-800 rounded-xl p-8 shadow-2xl w-full text-center">
-            <h2 class="text-xl font-bold text-white mb-4">ВЗЛОМ АЛГОРИТМОВ КАЗИНО</h2>
+        <div class="bg-zinc-950 border border-zinc-800 rounded-xl p-8 shadow-2xl w-full text-center relative overflow-hidden">
+             <!-- Декоративный элемент -->
+            <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-blue-600 via-purple-600 to-blue-600"></div>
+
+            <h2 class="text-2xl font-black text-white mb-4 tracking-wide">ВЗЛОМ АЛГОРИТМОВ</h2>
             <p class="text-sm text-zinc-400 mb-8 leading-relaxed">
-                Нейросеть KRAKEN анализирует хэши RNG-серверов в реальном времени и выдает прогнозы с точностью до 96.4%. Выберите игру и начните зарабатывать прямо сейчас.
+                Нейросеть KRAKEN анализирует хэши RNG-серверов в реальном времени и выдает прогнозы с точностью до <span class="text-green-400 font-bold">96.4%</span>. Выберите игру и начните зарабатывать прямо сейчас.
             </p>
             
-            <button id="btn-start" class="w-full bg-blue-600 hover:bg-blue-500 text-white py-4 rounded-lg font-bold text-lg tracking-wider uppercase transition-all shadow-[0_0_20px_rgba(37,99,235,0.4)] flex items-center justify-center gap-2">
+            <button id="btn-start" class="w-full bg-blue-600 hover:bg-blue-500 text-white py-4 rounded-lg font-bold text-lg tracking-wider uppercase transition-all shadow-[0_0_20px_rgba(37,99,235,0.4)] flex items-center justify-center gap-2 group">
                 НАЧАТЬ ЗАРАБАТЫВАТЬ
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+                <svg class="w-5 h-5 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
             </button>
         </div>
     </div>
@@ -56,26 +87,31 @@
             <p class="text-[10px] font-mono text-zinc-500">SESSION: 0x8F2A...B19</p>
         </div>
 
-        <!-- Выбор игры -->
+        <!-- Выбор игры (С ИЗОБРАЖЕНИЯМИ) -->
         <h3 class="text-xs font-mono text-zinc-500 uppercase tracking-wider w-full mb-3 text-left">Шаг 1: Выберите цель</h3>
         <div class="grid grid-cols-3 gap-3 w-full mb-8">
-            <button data-game="MINES" class="game-btn aspect-square bg-zinc-900 border border-zinc-700 hover:border-blue-500 rounded-xl flex flex-col items-center justify-center gap-2 transition-all group">
-                <div class="w-8 h-8 rounded bg-blue-500/20 text-blue-500 flex items-center justify-center group-hover:scale-110 transition-transform">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"></path></svg>
+            <!-- MINES -->
+            <button data-game="MINES" class="game-btn bg-zinc-900 border border-zinc-700 rounded-xl p-2 flex flex-col items-center justify-center gap-2">
+                <div class="w-16 h-16 rounded-lg overflow-hidden bg-black flex items-center justify-center mb-1">
+                     <img src="mines-logo.png" alt="Mines" class="w-full h-full object-cover">
                 </div>
-                <span class="font-bold text-xs">MINES</span>
+                <span class="font-bold text-xs text-white tracking-wider">MINES</span>
             </button>
-            <button data-game="AVIATOR" class="game-btn aspect-square bg-zinc-900 border border-zinc-700 hover:border-red-500 rounded-xl flex flex-col items-center justify-center gap-2 transition-all group">
-                <div class="w-8 h-8 rounded bg-red-500/20 text-red-500 flex items-center justify-center group-hover:scale-110 transition-transform">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"></path></svg>
+            
+            <!-- AVIATOR -->
+            <button data-game="AVIATOR" class="game-btn bg-zinc-900 border border-zinc-700 rounded-xl p-2 flex flex-col items-center justify-center gap-2">
+                <div class="w-16 h-16 rounded-lg overflow-hidden bg-white flex items-center justify-center mb-1 p-1">
+                     <img src="aviator-logo-png_seeklogo-618852.png" alt="Aviator" class="w-full h-auto object-contain">
                 </div>
-                <span class="font-bold text-xs">AVIATOR</span>
+                <span class="font-bold text-xs text-white tracking-wider">AVIATOR</span>
             </button>
-            <button data-game="APPLE" class="game-btn aspect-square bg-zinc-900 border border-zinc-700 hover:border-green-500 rounded-xl flex flex-col items-center justify-center gap-2 transition-all group">
-                <div class="w-8 h-8 rounded bg-green-500/20 text-green-500 flex items-center justify-center group-hover:scale-110 transition-transform">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 6l3 1m0 0l-3 9a5.002 5.002 0 006.001 0M6 7l3 9M6 7l6-2m6 2l3-1m-3 1l-3 9a5.002 5.002 0 006.001 0M18 7l3 9m-3-9l-6-2m0-2v2m0 16V5m0 16H9m3 0h3"></path></svg>
+            
+            <!-- APPLE -->
+            <button data-game="APPLE" class="game-btn bg-zinc-900 border border-zinc-700 rounded-xl p-2 flex flex-col items-center justify-center gap-2">
+                <div class="w-16 h-16 rounded-lg overflow-hidden bg-black flex items-center justify-center mb-1">
+                     <img src="unnamed.jpg" alt="Apple of Fortune" class="w-full h-full object-cover">
                 </div>
-                <span class="font-bold text-xs text-center leading-tight">APPLE OF<br>FORTUNE</span>
+                <span class="font-bold text-[10px] text-center leading-tight text-white tracking-wider">APPLE OF<br>FORTUNE</span>
             </button>
         </div>
 
@@ -88,16 +124,16 @@
             </div>
 
             <!-- Блок с ошибкой (ГЕЙТ) -->
-            <div id="status-error" class="hidden w-full h-full absolute inset-0 bg-zinc-950 flex flex-col items-center justify-center p-6 animate-fade-in z-20">
+            <div id="status-error" class="hidden w-full h-full absolute inset-0 bg-zinc-950/95 backdrop-blur-sm flex flex-col items-center justify-center p-6 animate-fade-in z-20">
                 <div class="w-16 h-16 bg-red-500/10 rounded-full flex items-center justify-center mb-4 error-glow">
                     <svg class="w-8 h-8 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
                 </div>
-                <h3 class="text-xl font-bold text-white mb-2">ОШИБКА 404: ИГРОК НЕ НАЙДЕН</h3>
+                <h3 class="text-xl font-bold text-white mb-2 text-center">ИГРОК НЕ НАЙДЕН</h3>
                 <p class="text-xs text-zinc-400 text-center mb-6 max-w-xs font-mono leading-relaxed">
-                    Нейросеть не может подключиться к вашему игровому аккаунту. <br><br>
+                    Нейросеть не может подключиться к вашему аккаунту. <br><br>
                     <span class="text-white">Мы работаем только с новыми аккаунтами для обхода Anti-Fraud системы казино.</span>
                 </p>
-                <button id="btn-show-register" class="bg-white text-black hover:bg-zinc-200 py-3 px-6 rounded font-bold text-sm uppercase tracking-wider transition-colors w-full max-w-xs">
+                <button id="btn-show-register" class="bg-white text-black hover:bg-zinc-200 py-3 px-6 rounded-lg font-bold text-sm uppercase tracking-wider transition-colors w-full max-w-xs shadow-lg">
                     СОЗДАТЬ НОВЫЙ АККАУНТ
                 </button>
             </div>
@@ -119,14 +155,14 @@
                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z"></path></svg>
                 </div>
                 <h3 class="text-2xl font-black text-white">ВЕРИФИКАЦИЯ</h3>
-                <p class="text-xs text-zinc-500 font-mono mt-1">ШАГ 1: РЕГИСТРАЦИЯ</p>
+                <p class="text-xs text-zinc-500 font-mono mt-1">ТРЕБУЕТСЯ НОВЫЙ АККАУНТ</p>
             </div>
 
             <div class="space-y-4 mb-6">
                 <div class="bg-zinc-900 border border-zinc-800 rounded-lg p-4 text-xs text-zinc-400 font-mono leading-relaxed">
-                    1. Зарегистрируйте <span class="text-white font-bold">НОВЫЙ</span> аккаунт по ссылке ниже.<br>
-                    2. Введите промокод <span class="text-blue-400 font-bold">KRAKEN</span>.<br>
-                    3. Скопируйте свой новый ID.
+                    <p class="mb-2">1. Зарегистрируйте <span class="text-white font-bold">НОВЫЙ</span> аккаунт по кнопке ниже.</p>
+                    <p class="mb-2">2. Введите промокод <span class="text-blue-400 font-bold text-sm bg-blue-900/30 px-1 rounded">KRAKEN</span> при регистрации.</p>
+                    <p>3. Скопируйте свой новый ID и вставьте сюда.</p>
                 </div>
                 
                 <a href="https://your-affiliate-link.com/register" target="_blank" rel="noreferrer" class="w-full bg-blue-600 hover:bg-blue-500 text-white py-4 rounded-lg font-bold text-sm flex items-center justify-center gap-2 transition-all shadow-[0_0_15px_rgba(37,99,235,0.4)]">
@@ -135,17 +171,17 @@
                 </a>
             </div>
 
-            <div class="border-t border-zinc-800 pt-4">
+            <div class="border-t border-zinc-800 pt-5 mt-2">
                 <p class="text-[10px] text-zinc-500 font-mono uppercase mb-2">Уже зарегистрировались?</p>
                 <input type="text" id="input-id" placeholder="Введите ваш новый ID" class="w-full bg-black border border-zinc-800 text-white rounded-lg p-3 outline-none focus:border-blue-500 transition-colors font-mono text-center mb-3">
                 <p id="error-msg" class="text-xs text-red-500 text-center font-mono hidden mb-3"></p>
-                <button id="btn-verify-id" class="w-full bg-white text-black hover:bg-zinc-200 py-3 rounded font-bold text-sm uppercase tracking-wider transition-colors">
-                    ПРОВЕРИТЬ ID И НАЧАТЬ
+                <button id="btn-verify-id" class="w-full bg-white text-black hover:bg-zinc-200 py-3 rounded-lg font-bold text-sm uppercase tracking-wider transition-colors shadow-lg">
+                    ПРОВЕРИТЬ ID
                 </button>
             </div>
             
-            <button id="btn-close-modal" class="absolute top-4 right-4 text-zinc-500 hover:text-white">
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+            <button id="btn-close-modal" class="absolute top-4 right-4 text-zinc-500 hover:text-white transition-colors">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
             </button>
         </div>
     </div>
@@ -183,14 +219,14 @@
             btn.addEventListener('click', (e) => {
                 // Сброс стилей всех кнопок
                 gameBtns.forEach(b => {
-                    b.classList.remove('bg-zinc-800', 'border-white');
-                    b.classList.add('bg-zinc-900', 'border-zinc-700');
+                    b.classList.remove('active');
+                    b.classList.remove('border-white', 'shadow-[0_0_15px_rgba(255,255,255,0.2)]');
                 });
                 
-                // Активный стиль для нажатой
+                // Активный стиль для нажатой (находим кнопку, даже если кликнули по картинке внутри)
                 const currentBtn = e.currentTarget;
-                currentBtn.classList.remove('bg-zinc-900', 'border-zinc-700');
-                currentBtn.classList.add('bg-zinc-800', 'border-white');
+                currentBtn.classList.add('active');
+                currentBtn.classList.add('border-white', 'shadow-[0_0_15px_rgba(255,255,255,0.2)]');
 
                 selectedGame = currentBtn.getAttribute('data-game');
                 
@@ -198,9 +234,14 @@
                 btnGetSignal.disabled = false;
                 btnGetSignal.classList.remove('opacity-50', 'cursor-not-allowed');
                 
-                // Убираем текст "выберите игру"
+                // Убираем текст "выберите игру" и прячем ошибку если была
                 statusWaitGame.classList.add('hidden');
-                statusError.classList.add('hidden'); // прячем ошибку, если была
+                statusError.classList.add('hidden'); 
+                
+                // Возвращаем кнопку прогноза в исходное состояние если она была спрятана
+                btnGetSignal.classList.remove('hidden');
+                document.getElementById('text-btn-signal').textContent = 'ПОЛУЧИТЬ ПРОГНОЗ';
+                document.getElementById('icon-spin').classList.add('hidden');
             });
         });
 
@@ -253,10 +294,9 @@
                 errorMsg.innerHTML = 'ВНИМАНИЕ: Данный ID не найден в базе <span class="font-bold">НОВЫХ</span> регистраций.<br>Обязательно зарегистрируйте новый аккаунт по ссылке выше.';
                 errorMsg.classList.remove('hidden');
                 btnVerifyId.disabled = false;
-                btnVerifyId.textContent = 'ПРОВЕРИТЬ ID И НАЧАТЬ';
+                btnVerifyId.textContent = 'ПРОВЕРИТЬ ID';
             }, 2000);
         });
-
     </script>
 </body>
 </html>
