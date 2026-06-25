@@ -115,38 +115,33 @@
             </button>
         </div>
 
-        <!-- Окно предикора -->
-        <div class="w-full bg-zinc-950 border border-zinc-800 rounded-xl p-6 shadow-xl relative overflow-hidden mb-6 min-h-[250px] flex flex-col items-center justify-center">
-            
-            <div id="status-wait-game" class="text-center opacity-30">
-                <svg class="w-12 h-12 mx-auto mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 15l-2 5L9 9l11 4-5 2zm0 0l5 5M7.188 2.239l.777 2.897M5.136 7.965l-2.898-.777M13.95 4.05l-2.122 2.122m-5.657 5.656l-2.12 2.122"></path></svg>
-                <p class="font-mono text-xs uppercase tracking-widest">Выберите игру выше</p>
-            </div>
-
-            <!-- Блок с ошибкой (ГЕЙТ) -->
-            <div id="status-error" class="hidden w-full h-full absolute inset-0 bg-zinc-950/95 backdrop-blur-sm flex flex-col items-center justify-center p-6 animate-fade-in z-20">
-                <div class="w-16 h-16 bg-red-500/10 rounded-full flex items-center justify-center mb-4 error-glow">
-                    <svg class="w-8 h-8 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
-                </div>
-                <h3 class="text-xl font-bold text-white mb-2 text-center">ИГРОК НЕ НАЙДЕН</h3>
-                <p class="text-xs text-zinc-400 text-center mb-6 max-w-xs font-mono leading-relaxed">
-                    Нейросеть не может подключиться к вашему аккаунту. <br><br>
-                    <span class="text-white">Мы работаем только с новыми аккаунтами для обхода Anti-Fraud системы казино.</span>
-                </p>
-                <button id="btn-show-register" class="bg-white text-black hover:bg-zinc-200 py-3 px-6 rounded-lg font-bold text-sm uppercase tracking-wider transition-colors w-full max-w-xs shadow-lg">
-                    СОЗДАТЬ НОВЫЙ АККАУНТ
-                </button>
-            </div>
-
-        </div>
-
         <button id="btn-get-signal" class="w-full bg-blue-600 hover:bg-blue-500 text-white py-4 rounded-lg font-bold text-sm tracking-wider uppercase transition-all flex items-center justify-center gap-2 opacity-50 cursor-not-allowed" disabled>
             <svg id="icon-spin" class="w-5 h-5 animate-spin hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path></svg>
             <span id="text-btn-signal">ПОЛУЧИТЬ ПРОГНОЗ</span>
         </button>
     </div>
 
-    <!-- VIEW 3: MODAL REGISTER (Появляется поверх) -->
+    <!-- VIEW 3: MODAL ERROR (Всплывающая ошибка) -->
+    <div id="modal-error" class="fixed inset-0 bg-black/90 backdrop-blur-sm z-50 hidden flex-col items-center justify-center p-4 animate-fade-in z-[60]">
+        <div class="bg-zinc-950 border border-red-900/30 rounded-2xl p-8 w-full max-w-sm shadow-2xl relative flex flex-col items-center text-center">
+            <div class="w-16 h-16 bg-red-500/10 rounded-full flex items-center justify-center mb-4 error-glow">
+                <svg class="w-8 h-8 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
+            </div>
+            <h3 class="text-xl font-black text-white mb-2">ИГРОК НЕ НАЙДЕН</h3>
+            <p class="text-xs text-zinc-400 mb-8 font-mono leading-relaxed">
+                Нейросеть не может подключиться к вашему аккаунту. <br><br>
+                <span class="text-white">Мы работаем только с новыми аккаунтами для обхода Anti-Fraud системы казино.</span>
+            </p>
+            <button id="btn-show-register" class="bg-white text-black hover:bg-zinc-200 py-4 px-6 rounded-lg font-bold text-sm uppercase tracking-wider transition-colors w-full shadow-[0_0_20px_rgba(255,255,255,0.2)]">
+                СОЗДАТЬ НОВЫЙ АККАУНТ
+            </button>
+            <button id="btn-close-error" class="absolute top-4 right-4 text-zinc-500 hover:text-white transition-colors">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+            </button>
+        </div>
+    </div>
+
+    <!-- VIEW 4: MODAL REGISTER (Появляется поверх) -->
     <div id="modal-register" class="fixed inset-0 bg-black/90 backdrop-blur-sm z-50 hidden flex-col items-center justify-center p-4 animate-fade-in">
         <div class="bg-zinc-950 border border-zinc-800 rounded-2xl p-6 w-full max-w-md shadow-2xl relative">
             
@@ -190,16 +185,15 @@
         // Элементы
         const viewLanding = document.getElementById('view-landing');
         const viewMain = document.getElementById('view-main');
+        const modalError = document.getElementById('modal-error');
         const modalRegister = document.getElementById('modal-register');
         
         const btnStart = document.getElementById('btn-start');
         const gameBtns = document.querySelectorAll('.game-btn');
         const btnGetSignal = document.getElementById('btn-get-signal');
         
-        const statusWaitGame = document.getElementById('status-wait-game');
-        const statusError = document.getElementById('status-error');
-        
         const btnShowRegister = document.getElementById('btn-show-register');
+        const btnCloseError = document.getElementById('btn-close-error');
         const btnCloseModal = document.getElementById('btn-close-modal');
         const btnVerifyId = document.getElementById('btn-verify-id');
         const inputId = document.getElementById('input-id');
@@ -234,10 +228,6 @@
                 btnGetSignal.disabled = false;
                 btnGetSignal.classList.remove('opacity-50', 'cursor-not-allowed');
                 
-                // Убираем текст "выберите игру" и прячем ошибку если была
-                statusWaitGame.classList.add('hidden');
-                statusError.classList.add('hidden'); 
-                
                 // Возвращаем кнопку прогноза в исходное состояние если она была спрятана
                 btnGetSignal.classList.remove('hidden');
                 document.getElementById('text-btn-signal').textContent = 'ПОЛУЧИТЬ ПРОГНОЗ';
@@ -257,20 +247,35 @@
             textBtn.textContent = 'СИНХРОНИЗАЦИЯ...';
             iconSpin.classList.remove('hidden');
 
-            // Имитация работы 1.5 секунды, затем вылет ОШИБКИ
+            // Имитация работы 1.5 секунды, затем вылет ВСПЛЫВАЮЩЕЙ ОШИБКИ
             setTimeout(() => {
-                btnGetSignal.classList.add('hidden'); // Прячем кнопку вообще
-                statusError.classList.remove('hidden'); // Показываем ГЕЙТ
+                // Возвращаем кнопку в нормальное состояние
+                btnGetSignal.disabled = false;
+                textBtn.textContent = 'ПОЛУЧИТЬ ПРОГНОЗ';
+                iconSpin.classList.add('hidden');
+
+                // Показываем всплывающее окно с ошибкой
+                modalError.classList.remove('hidden');
+                modalError.classList.add('flex');
             }, 1500);
         });
 
-        // Открытие модалки регистрации
+        // Открытие модалки регистрации (из модалки ошибки)
         btnShowRegister.addEventListener('click', () => {
+            modalError.classList.add('hidden');
+            modalError.classList.remove('flex');
+            
             modalRegister.classList.remove('hidden');
             modalRegister.classList.add('flex');
         });
 
-        // Закрытие модалки
+        // Закрытие модалки ошибки
+        btnCloseError.addEventListener('click', () => {
+            modalError.classList.add('hidden');
+            modalError.classList.remove('flex');
+        });
+
+        // Закрытие модалки регистрации
         btnCloseModal.addEventListener('click', () => {
             modalRegister.classList.add('hidden');
             modalRegister.classList.remove('flex');
