@@ -1,0 +1,307 @@
+import React, { useState, useEffect } from 'react';
+import { Activity, Zap, Lock, Key, ExternalLink, AlertTriangle, RefreshCw, Crosshair, Terminal } from 'lucide-react';
+
+export default function KrakenPredictorFull() {
+  // --- Состояния Авторизации (Гейта) ---
+  const [isVerified, setIsVerified] = useState(false);
+  const [isVerifying, setIsVerifying] = useState(false);
+  const [userId, setUserId] = useState('');
+  const [verificationError, setVerificationError] = useState('');
+
+  // --- Состояния Предиктора ---
+  const [isConnected, setIsConnected] = useState(false);
+  const [isConnecting, setIsConnecting] = useState(false);
+  const [game, setGame] = useState('MINES');
+  const [isAnalyzing, setIsAnalyzing] = useState(false);
+  const [signal, setSignal] = useState(null);
+  const [logs, setLogs] = useState(['[SYSTEM] KRAKEN AI Core Initialized...']);
+
+  // ВАША ССЫЛКА (Замените на свою)
+  const AFFILIATE_LINK = "https://your-affiliate-link.com/register";
+
+  const addLog = (msg) => {
+    setLogs(prev => [...prev, `[${new Date().toLocaleTimeString()}] ${msg}`].slice(-5));
+  };
+
+  // Логика проверки ID (Гейт)
+  const handleVerify = () => {
+    if (userId.length < 5) {
+      setVerificationError('Ошибка: Неверный формат ID (минимум 5 цифр)');
+      return;
+    }
+    setIsVerifying(true);
+    setVerificationError('');
+    
+    setTimeout(() => {
+      // Имитация проверки по базе
+      if (userId.startsWith('000')) {
+        setVerificationError('Ошибка: ID не найден в базе новых регистраций.');
+        setIsVerifying(false);
+      } else {
+        setIsVerified(true);
+        setIsVerifying(false);
+        addLog('User verification successful. Access granted.');
+      }
+    }, 2500);
+  };
+
+  // Логика подключения к серверу
+  const handleConnect = () => {
+    setIsConnecting(true);
+    addLog('Connecting to casino socket servers...');
+    setTimeout(() => {
+      addLog('Bypassing SSL encryption...');
+      setTimeout(() => {
+        setIsConnected(true);
+        setIsConnecting(false);
+        addLog('CONNECTED. Ready to intercept hashes.');
+      }, 1500);
+    }, 1500);
+  };
+
+  // Логика генерации сигнала
+  const getSignal = () => {
+    setIsAnalyzing(true);
+    setSignal(null);
+    addLog(`Targeting game: ${game}...`);
+    addLog('Decrypting next round SHA-256 hash...');
+
+    setTimeout(() => {
+      let result;
+      if (game === 'MINES') {
+        // Генерируем 3-5 безопасных клеток на поле 5x5
+        const safeSpots = [];
+        const numSpots = Math.floor(Math.random() * 3) + 3;
+        while(safeSpots.length < numSpots) {
+          const r = Math.floor(Math.random() * 25);
+          if(!safeSpots.includes(r)) safeSpots.push(r);
+        }
+        result = { type: 'grid', data: safeSpots };
+        addLog('Mines algorithm bypassed. Map generated.');
+      } else if (game === 'AVIATOR') {
+        // Генерируем случайный множитель
+        const multiplier = (Math.random() * (5.5 - 1.2) + 1.2).toFixed(2);
+        result = { type: 'multiplier', data: `${multiplier}x` };
+        addLog(`Crash predicted at ${multiplier}x.`);
+      } else if (game === 'APPLE') {
+        // Генерируем путь для яблочек (1 из 5 в каждом из 4 рядов)
+        const path = [
+          Math.floor(Math.random() * 5),
+          Math.floor(Math.random() * 5),
+          Math.floor(Math.random() * 5),
+          Math.floor(Math.random() * 5)
+        ];
+        result = { type: 'path', data: path };
+        addLog('Apple of Fortune pattern injected.');
+      }
+      
+      setSignal(result);
+      setIsAnalyzing(false);
+    }, 3000);
+  };
+
+  // Рендер экрана Гейта (Регистрации)
+  if (!isVerified) {
+    return (
+      <div className="min-h-screen bg-black text-zinc-300 font-sans p-4 flex flex-col items-center justify-center">
+        <div className="max-w-md w-full bg-zinc-950 border border-zinc-800 rounded-xl p-6 shadow-2xl relative overflow-hidden">
+          <div className="absolute top-0 left-0 w-full h-1 bg-red-600"></div>
+          
+          <div className="flex flex-col items-center text-center mb-6">
+            <Lock className="w-12 h-12 text-red-500 mb-3" />
+            <h1 className="text-3xl font-black text-white tracking-tighter mb-1">ДОСТУП ЗАКРЫТ</h1>
+            <p className="text-xs font-mono text-zinc-500">ТРЕБУЕТСЯ ВЕРИФИКАЦИЯ АККАУНТА</p>
+          </div>
+
+          <div className="space-y-5 mb-6">
+            <div className="bg-red-950/20 border border-red-900/50 rounded-lg p-4">
+              <p className="text-xs text-zinc-400 leading-relaxed font-mono">
+                Система <span className="text-white font-bold">KRAKEN AI</span> работает только с <span className="text-white font-bold">НОВЫМИ</span> аккаунтами. 
+                Нам нужна чистая история профиля для успешного обхода Anti-Fraud систем казино.
+              </p>
+            </div>
+
+            <div className="space-y-2">
+              <p className="text-[11px] font-bold text-white uppercase tracking-wider">Шаг 1: Создайте аккаунт</p>
+              <a 
+                href={AFFILIATE_LINK} 
+                target="_blank"
+                rel="noreferrer"
+                className="w-full bg-blue-600 hover:bg-blue-500 text-white py-4 rounded-lg font-bold text-sm flex items-center justify-center gap-2 transition-all shadow-[0_0_15px_rgba(37,99,235,0.4)]"
+              >
+                РЕГИСТРАЦИЯ <ExternalLink className="w-4 h-4" />
+              </a>
+              <p className="text-[10px] text-zinc-500 text-center">Используйте промокод KRAKEN при регистрации для бонуса</p>
+            </div>
+
+            <div className="space-y-2 pt-4 border-t border-zinc-800/80">
+              <p className="text-[11px] font-bold text-white uppercase tracking-wider">Шаг 2: Введите ваш новый ID</p>
+              <input 
+                type="text" 
+                placeholder="Например: 8472911"
+                value={userId}
+                onChange={(e) => setUserId(e.target.value)}
+                className="w-full bg-zinc-900 border border-zinc-700 text-white rounded-lg p-4 outline-none focus:border-red-500 transition-colors font-mono text-center text-lg tracking-widest"
+              />
+              {verificationError && <p className="text-xs text-red-500 text-center mt-2 font-mono">{verificationError}</p>}
+            </div>
+          </div>
+
+          <button 
+            onClick={handleVerify}
+            disabled={isVerifying || userId.length === 0}
+            className="w-full bg-white text-black hover:bg-zinc-200 disabled:bg-zinc-800 disabled:text-zinc-500 py-4 rounded-lg font-bold text-sm tracking-wider uppercase transition-all duration-300 flex items-center justify-center gap-2"
+          >
+            {isVerifying ? (
+              <><Activity className="w-5 h-5 animate-spin" /> ПРОВЕРКА В БАЗЕ...</>
+            ) : (
+              <><Key className="w-5 h-5" /> АВТОРИЗОВАТЬСЯ</>
+            )}
+          </button>
+        </div>
+      </div>
+    );
+  }
+
+  // Рендер Основного Интерфейса (После авторизации)
+  return (
+    <div className="min-h-screen bg-black text-zinc-300 font-sans p-4 md:p-8 flex flex-col items-center">
+      
+      {/* Шапка */}
+      <div className="max-w-2xl w-full flex items-center justify-between mb-8 border-b border-zinc-800 pb-4">
+        <div>
+          <h1 className="text-2xl font-black text-white tracking-tighter">KRAKEN EXPLOIT</h1>
+          <p className="text-[10px] font-mono text-zinc-500">ID: {userId} | STATUS: AUTHORIZED</p>
+        </div>
+        {!isConnected ? (
+          <button 
+            onClick={handleConnect}
+            disabled={isConnecting}
+            className="bg-red-600 hover:bg-red-500 text-white px-6 py-2 rounded font-bold text-xs tracking-widest uppercase transition-colors flex items-center gap-2"
+          >
+            {isConnecting ? <Activity className="w-4 h-4 animate-spin"/> : 'CONNECT'}
+          </button>
+        ) : (
+          <div className="bg-green-500/10 text-green-500 border border-green-500/30 px-4 py-2 rounded font-mono text-xs flex items-center gap-2">
+            <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
+            CONNECTED
+          </div>
+        )}
+      </div>
+
+      {/* Основной блок */}
+      <div className="max-w-2xl w-full grid grid-cols-1 md:grid-cols-2 gap-6 relative">
+        
+        {/* Оверлей блокировки если не подключен */}
+        {!isConnected && (
+          <div className="absolute inset-0 z-10 bg-black/80 backdrop-blur-sm flex items-center justify-center rounded-xl border border-zinc-800">
+            <p className="font-mono text-sm text-zinc-400 animate-pulse">ОЖИДАНИЕ ПОДКЛЮЧЕНИЯ К СЕРВЕРУ...</p>
+          </div>
+        )}
+
+        {/* Левая колонка - Управление */}
+        <div className="bg-zinc-950 border border-zinc-800 rounded-xl p-5">
+          <div className="mb-6">
+            <label className="block text-xs text-zinc-500 mb-2 uppercase font-mono">Выбор алгоритма</label>
+            <div className="grid grid-cols-1 gap-2">
+              {['MINES', 'AVIATOR', 'APPLE'].map(g => (
+                <button
+                  key={g}
+                  onClick={() => setGame(g)}
+                  className={`p-3 text-left font-mono text-sm rounded border ${game === g ? 'bg-white text-black border-white' : 'bg-zinc-900 text-zinc-400 border-zinc-800 hover:border-zinc-600'}`}
+                >
+                  {g}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          <button 
+            onClick={getSignal}
+            disabled={isAnalyzing || !isConnected}
+            className="w-full bg-blue-600 hover:bg-blue-500 disabled:bg-zinc-800 disabled:text-zinc-600 text-white py-4 rounded font-bold text-sm tracking-wider uppercase transition-all flex items-center justify-center gap-2"
+          >
+            {isAnalyzing ? <RefreshCw className="w-4 h-4 animate-spin"/> : <Crosshair className="w-4 h-4"/>}
+            {isAnalyzing ? 'ВЗЛОМ ХЭША...' : 'ПОЛУЧИТЬ СИГНАЛ'}
+          </button>
+        </div>
+
+        {/* Правая колонка - Результат */}
+        <div className="bg-zinc-950 border border-zinc-800 rounded-xl p-5 flex flex-col items-center justify-center min-h-[300px] relative overflow-hidden">
+          
+          {!signal && !isAnalyzing && (
+            <div className="opacity-20 text-center">
+              <Zap className="w-16 h-16 mx-auto mb-2" />
+              <p className="font-mono text-xs">AWAITING COMMAND</p>
+            </div>
+          )}
+
+          {isAnalyzing && (
+            <div className="text-center font-mono space-y-4">
+              <div className="w-16 h-16 border-4 border-blue-500/30 border-t-blue-500 rounded-full animate-spin mx-auto"></div>
+              <p className="text-blue-500 text-xs">DECRYPTING...</p>
+            </div>
+          )}
+
+          {signal && !isAnalyzing && (
+            <div className="w-full animate-[fadeIn_0.3s_ease-out] flex flex-col items-center">
+              <p className="text-[10px] text-zinc-500 font-mono mb-4">SUCCESS: SIGNAL GENERATED</p>
+              
+              {/* Рендер результата в зависимости от игры */}
+              {game === 'AVIATOR' && (
+                <div className="text-center">
+                  <p className="text-xs text-zinc-400 mb-1">ЗАБИРАЙТЕ НА:</p>
+                  <h2 className="text-6xl font-black text-blue-500">{signal.data}</h2>
+                </div>
+              )}
+
+              {game === 'MINES' && (
+                <div className="grid grid-cols-5 gap-1 w-full max-w-[200px]">
+                  {Array.from({length: 25}).map((_, i) => (
+                    <div 
+                      key={i} 
+                      className={`aspect-square rounded flex items-center justify-center ${signal.data.includes(i) ? 'bg-blue-500' : 'bg-zinc-900 border border-zinc-800'}`}
+                    >
+                      {signal.data.includes(i) && <div className="w-2 h-2 bg-white rounded-full shadow-[0_0_8px_white]"></div>}
+                    </div>
+                  ))}
+                </div>
+              )}
+
+              {game === 'APPLE' && (
+                <div className="flex flex-col gap-1 w-full max-w-[200px]">
+                  {signal.data.map((colIndex, row) => (
+                    <div key={row} className="grid grid-cols-5 gap-1">
+                      {Array.from({length: 5}).map((_, col) => (
+                        <div 
+                          key={col} 
+                          className={`aspect-square rounded flex items-center justify-center ${colIndex === col ? 'bg-green-500' : 'bg-zinc-900 border border-zinc-800'}`}
+                        >
+                          {colIndex === col && <div className="w-2 h-2 bg-white rounded-full"></div>}
+                        </div>
+                      ))}
+                    </div>
+                  )).reverse()}
+                </div>
+              )}
+            </div>
+          )}
+        </div>
+      </div>
+
+      {/* Логи терминала */}
+      <div className="max-w-2xl w-full mt-6 bg-black border border-zinc-900 rounded p-4 font-mono text-[10px]">
+        <div className="flex items-center gap-2 text-zinc-500 mb-2 pb-2 border-b border-zinc-900">
+          <Terminal className="w-3 h-3" />
+          <span>TERMINAL LOGS</span>
+        </div>
+        <div className="space-y-1">
+          {logs.map((log, i) => (
+            <p key={i} className="text-green-500/70">{log}</p>
+          ))}
+        </div>
+      </div>
+
+    </div>
+  );
+}
