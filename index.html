@@ -20,601 +20,134 @@
         .error-glow {
             animation: pulse-red 2s infinite;
         }
-        
-        /* Стили для кнопок опроса */
-        .quiz-btn {
-            position: relative;
-            overflow: hidden;
-            transition: all 0.3s ease;
-            border: 1px solid #27272a; /* zinc-800 */
-        }
-        .quiz-btn:hover {
-            border-color: #52525b; /* zinc-600 */
-            background-color: #18181b; /* zinc-900 */
-        }
-        .quiz-btn.selected {
-            border-color: white;
-            background-color: white;
-            color: black;
-            box-shadow: 0 0 15px rgba(255,255,255,0.2);
-            transform: translateY(-2px);
-        }
-
-        /* Стили для кнопок игр */
         .game-btn {
             position: relative;
             overflow: hidden;
             transition: all 0.3s ease;
         }
-        .game-btn::before {
-            content: '';
-            position: absolute;
-            top: 0; left: 0; right: 0; bottom: 0;
-            background: linear-gradient(180deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0) 100%);
-            opacity: 0;
-            transition: opacity 0.3s ease;
-        }
-        .game-btn:hover::before {
-            opacity: 1;
-        }
         .game-btn.active {
             border-color: white;
             box-shadow: 0 0 15px rgba(255,255,255,0.2);
             transform: translateY(-2px);
-            background-color: #18181b; /* zinc-900 */
-        }
-        .game-btn img {
-            transition: transform 0.3s ease;
-        }
-        .game-btn:hover img {
-            transform: scale(1.05);
-        }
-
-        /* Анимация прогресс-бара */
-        .progress-bar-fill {
-            transition: width 0.3s ease-in-out;
         }
     </style>
 </head>
-<body class="bg-black text-zinc-300 font-sans min-h-screen flex flex-col items-center p-4 overflow-x-hidden">
+<body class="bg-black text-zinc-300 font-sans min-h-screen flex flex-col items-center p-4">
 
-    <!-- VIEW 1: LANDING PAGE -->
+    <!-- VIEW 1: LANDING -->
     <div id="view-landing" class="flex-1 w-full max-w-xl flex flex-col items-center justify-center animate-fade-in">
-        
-        <!-- Логотип KRAKEN -->
-        <div class="flex flex-col items-center mb-10">
-            <svg class="w-32 h-32 mb-4" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M40 140 L70 90 L60 80 L90 50 L100 70 L80 140 Z" fill="white"/>
-                <path d="M100 80 L115 50 L130 75 L120 85 L125 105 L110 105 Z" fill="white"/>
-                <path d="M135 105 L135 90 L145 70 L160 90 L165 140 L135 140 L145 115 Z" fill="white"/>
-                <path d="M40 140 L20 160 L80 160 L80 140 Z" fill="white"/>
-            </svg>
-            
-            <h1 class="text-6xl font-black text-white tracking-tighter mb-2" style="font-family: 'Arial Black', Impact, sans-serif;">KRAKEN</h1>
-            <p class="text-[10px] font-mono text-zinc-500 uppercase tracking-[0.3em]">AI PREDICTION ENGINE v2.4</p>
+        <div class="text-center mb-10">
+            <h1 class="text-5xl font-black text-white tracking-tighter mb-2">KRAKEN <span class="text-blue-500">AI</span></h1>
+            <p class="text-sm font-mono text-zinc-500 uppercase tracking-widest">Prediction & Exploit System v2.4</p>
         </div>
-
         <div class="bg-zinc-950 border border-zinc-800 rounded-xl p-8 shadow-2xl w-full text-center relative overflow-hidden">
-             <!-- Декоративный элемент -->
-            <div class="absolute top-0 left-0 w-full h-1 bg-white"></div>
-
+            <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-blue-600 via-purple-600 to-blue-600"></div>
             <h2 class="text-2xl font-black text-white mb-4 tracking-wide">ВЗЛОМ АЛГОРИТМОВ</h2>
             <p class="text-sm text-zinc-400 mb-8 leading-relaxed">
-                Нейросеть KRAKEN анализирует хэши RNG-серверов в реальном времени и выдает прогнозы с точностью до <span class="text-white font-bold">96.4%</span>. Вычислите свой потенциальный доход прямо сейчас.
+                Нейросеть KRAKEN анализирует хэши RNG-серверов в реальном времени с точностью до <span class="text-green-400 font-bold">96.4%</span>.
             </p>
-            
-            <button id="btn-start" class="w-full bg-white hover:bg-zinc-200 text-black py-4 rounded-lg font-black text-lg tracking-wider uppercase transition-all shadow-[0_0_20px_rgba(255,255,255,0.2)] flex items-center justify-center gap-2 group">
-                РАССЧИТАТЬ ДОХОД
-                <svg class="w-5 h-5 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+            <button type="button" id="btn-start" class="w-full bg-blue-600 hover:bg-blue-500 text-white py-4 rounded-lg font-bold text-lg tracking-wider uppercase transition-all shadow-[0_0_20px_rgba(37,99,235,0.4)] flex items-center justify-center gap-2 group">
+                НАЧАТЬ ЗАРАБАТЫВАТЬ
             </button>
         </div>
     </div>
 
-    <!-- VIEW 2: QUIZ FUNNEL -->
-    <div id="view-quiz" class="hidden flex-1 w-full max-w-xl flex-col items-center pt-10 pb-20 animate-fade-in">
-        
-        <div class="w-full mb-8">
-            <div class="flex justify-between text-[10px] font-mono text-zinc-500 mb-2">
-                <span>КАЛИБРОВКА ИИ</span>
-                <span id="quiz-progress-text">ШАГ 1 ИЗ 3</span>
-            </div>
-            <div class="w-full h-1 bg-zinc-900 rounded-full overflow-hidden">
-                <div id="quiz-progress-bar" class="h-full bg-white progress-bar-fill w-1/3"></div>
-            </div>
-        </div>
-
-        <div class="bg-zinc-950 border border-zinc-800 rounded-xl p-6 w-full shadow-2xl relative min-h-[350px] flex flex-col">
-            
-            <!-- QUIZ STEP 1 -->
-            <div id="quiz-step-1" class="flex-1 flex flex-col animate-fade-in">
-                <h2 class="text-xl font-black text-white mb-2 text-center tracking-wide">ФИНАНСОВАЯ ЦЕЛЬ</h2>
-                <p class="text-xs text-zinc-400 text-center mb-8 font-mono">Какую сумму вы планируете зарабатывать за месяц с помощью алгоритма?</p>
-                
-                <div class="grid grid-cols-1 gap-3 flex-1 content-center">
-                    <button class="quiz-btn bg-black text-white p-4 rounded-lg font-bold tracking-wider text-sm flex flex-col items-center gap-1" data-val="Базовый ($500+)">
-                        <span>$500 - $1,000</span>
-                        <span class="text-[10px] text-zinc-500 font-normal">~ 7,000,000 SYP</span>
-                    </button>
-                    <button class="quiz-btn bg-black text-white p-4 rounded-lg font-bold tracking-wider text-sm flex flex-col items-center gap-1" data-val="Продвинутый ($2000+)">
-                        <span>$2,000 - $5,000</span>
-                        <span class="text-[10px] text-zinc-500 font-normal">~ 35,000,000 SYP</span>
-                    </button>
-                    <button class="quiz-btn bg-black text-white p-4 rounded-lg font-bold tracking-wider text-sm flex flex-col items-center gap-1" data-val="Максимальный ($10k+)">
-                        <span>$10,000+</span>
-                        <span class="text-[10px] text-zinc-500 font-normal">VIP Лимит</span>
-                    </button>
-                </div>
-            </div>
-
-            <!-- QUIZ STEP 2 -->
-            <div id="quiz-step-2" class="hidden flex-1 flex-col animate-fade-in">
-                <h2 class="text-xl font-black text-white mb-2 text-center tracking-wide">РЕСУРС ВРЕМЕНИ</h2>
-                <p class="text-xs text-zinc-400 text-center mb-8 font-mono">Сколько часов в день вы готовы использовать предикторы?</p>
-                
-                <div class="grid grid-cols-1 gap-3 flex-1 content-center">
-                    <button class="quiz-btn bg-black text-white p-4 rounded-lg font-bold tracking-wider text-sm" data-val="1-3 часа">
-                        От 1 до 3 часов
-                    </button>
-                    <button class="quiz-btn bg-black text-white p-4 rounded-lg font-bold tracking-wider text-sm" data-val="3-6 часов">
-                        От 3 до 6 часов
-                    </button>
-                    <button class="quiz-btn bg-black text-white p-4 rounded-lg font-bold tracking-wider text-sm" data-val="Более 6 часов">
-                        Более 6 часов (Full-time)
-                    </button>
-                </div>
-            </div>
-
-            <!-- QUIZ STEP 3 -->
-            <div id="quiz-step-3" class="hidden flex-1 flex-col animate-fade-in">
-                <h2 class="text-xl font-black text-white mb-2 text-center tracking-wide">ВЫБОР АЛГОРИТМА</h2>
-                <p class="text-xs text-zinc-400 text-center mb-6 font-mono">Какую игру будем взламывать в первую очередь?</p>
-                
-                <div class="grid grid-cols-3 gap-3 flex-1 content-center">
-                    <button class="quiz-btn bg-black text-white p-3 rounded-xl flex flex-col items-center justify-center gap-3 aspect-square" data-val="MINES">
-                        <span class="text-4xl">💣</span>
-                        <span class="font-bold text-[10px] tracking-wider">MINES</span>
-                    </button>
-                    <button class="quiz-btn bg-black text-white p-3 rounded-xl flex flex-col items-center justify-center gap-3 aspect-square" data-val="AVIATOR">
-                        <span class="text-4xl">✈️</span>
-                        <span class="font-bold text-[10px] tracking-wider">AVIATOR</span>
-                    </button>
-                    <button class="quiz-btn bg-black text-white p-3 rounded-xl flex flex-col items-center justify-center gap-3 aspect-square" data-val="APPLE">
-                        <span class="text-4xl">🍏</span>
-                        <span class="font-bold text-[10px] tracking-wider">APPLE</span>
-                    </button>
-                </div>
-            </div>
-
-            <!-- QUIZ CALCULATION (LOADING) -->
-            <div id="quiz-calc" class="hidden flex-1 flex-col items-center justify-center animate-fade-in">
-                <div class="w-16 h-16 border-4 border-zinc-800 border-t-white rounded-full animate-spin mb-6"></div>
-                <h2 class="text-lg font-black text-white tracking-widest mb-2">ОБРАБОТКА ДАННЫХ</h2>
-                <div class="text-xs font-mono text-zinc-500 space-y-1 text-center" id="calc-logs">
-                    <p class="animate-pulse">Анализ волатильности RNG...</p>
-                </div>
-            </div>
-
-            <!-- QUIZ RESULT -->
-            <div id="quiz-result" class="hidden flex-1 flex-col animate-fade-in">
-                <div class="text-center mb-6">
-                    <div class="w-12 h-12 bg-white text-black rounded-full flex items-center justify-center mx-auto mb-3">
-                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-                    </div>
-                    <h2 class="text-2xl font-black text-white tracking-widest">АНАЛИЗ ЗАВЕРШЕН</h2>
-                </div>
-
-                <div class="bg-black border border-zinc-800 rounded-lg p-5 mb-6">
-                    <p class="text-xs text-zinc-400 font-mono mb-4 text-center leading-relaxed">
-                        На основе ваших ответов, искусственный интеллект рассчитал ваш потенциал:
-                    </p>
-                    <div class="space-y-3">
-                        <div class="flex justify-between items-center pb-2 border-b border-zinc-900">
-                            <span class="text-[10px] font-mono text-zinc-500">ВРЕМЯ ДОХОДА:</span>
-                            <span class="text-sm font-bold text-white" id="res-time">14 дней</span>
-                        </div>
-                        <div class="flex justify-between items-center pb-2 border-b border-zinc-900">
-                            <span class="text-[10px] font-mono text-zinc-500">ТОЧНОСТЬ СИГНАЛОВ:</span>
-                            <span class="text-sm font-bold text-green-500">97.2%</span>
-                        </div>
-                        <div class="flex justify-between items-center">
-                            <span class="text-[10px] font-mono text-zinc-500">ПРИОРИТЕТНАЯ ЦЕЛЬ:</span>
-                            <span class="text-sm font-bold text-white" id="res-game">MINES</span>
-                        </div>
-                    </div>
-                </div>
-
-                <button id="btn-go-main" class="w-full bg-white hover:bg-zinc-200 text-black py-4 rounded-lg font-black text-sm tracking-wider uppercase transition-all shadow-[0_0_20px_rgba(255,255,255,0.2)]">
-                    ОТКРЫТЬ ПРЕДИКТОР
-                </button>
-            </div>
-
-        </div>
-    </div>
-
-    <!-- VIEW 3: GAME SELECTION & PREDICTION (MAIN) -->
+    <!-- VIEW 2: MAIN DASHBOARD -->
     <div id="view-main" class="hidden w-full max-w-xl flex-col items-center pt-8 pb-20 animate-fade-in">
-        
-        <!-- Header -->
         <div class="w-full flex items-center justify-between mb-8 pb-4 border-b border-zinc-800">
-            <div class="flex items-center gap-3">
-                <svg class="w-8 h-8" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M40 140 L70 90 L60 80 L90 50 L100 70 L80 140 Z" fill="white"/><path d="M100 80 L115 50 L130 75 L120 85 L125 105 L110 105 Z" fill="white"/><path d="M135 105 L135 90 L145 70 L160 90 L165 140 L135 140 L145 115 Z" fill="white"/><path d="M40 140 L20 160 L80 160 L80 140 Z" fill="white"/>
-                </svg>
-                <div class="flex flex-col">
-                    <span class="text-xs font-black text-white tracking-widest">KRAKEN</span>
-                    <div class="flex items-center gap-1">
-                        <span class="w-1.5 h-1.5 bg-green-500 rounded-full animate-pulse"></span>
-                        <span class="text-[9px] font-mono font-bold text-green-500">SYSTEM ONLINE</span>
-                    </div>
-                </div>
+            <div class="flex items-center gap-2">
+                <span class="w-2 h-2 bg-green-500 rounded-full animate-pulse"></span>
+                <span class="text-xs font-mono font-bold text-green-500">SYSTEM ONLINE</span>
             </div>
             <p class="text-[10px] font-mono text-zinc-500">SESSION: 0x8F2A...B19</p>
         </div>
 
-        <div class="w-full mb-8 relative">
-             <div class="absolute inset-0 bg-white/5 rounded-xl blur-xl"></div>
-             <div class="bg-zinc-950 border border-zinc-800 rounded-xl p-6 relative flex items-center justify-between">
-                <div>
-                    <p class="text-[10px] font-mono text-zinc-500 mb-1">ТЕКУЩАЯ ЦЕЛЬ</p>
-                    <p class="text-sm font-bold text-white" id="main-goal-text">Заработать $500</p>
-                </div>
-                <div class="text-right">
-                    <p class="text-[10px] font-mono text-zinc-500 mb-1">ОЖИДАЕМОЕ ВРЕМЯ</p>
-                    <p class="text-sm font-bold text-white" id="main-time-text">14 дней</p>
-                </div>
-             </div>
-        </div>
-
-        <h3 class="text-xs font-mono text-zinc-500 uppercase tracking-wider w-full mb-3 text-left">Выберите игру для взлома</h3>
+        <h3 class="text-xs font-mono text-zinc-500 uppercase tracking-wider w-full mb-3 text-left">Шаг 1: Выберите цель</h3>
         <div class="grid grid-cols-3 gap-3 w-full mb-8">
-            <button data-game="MINES" class="game-btn bg-black border border-zinc-800 rounded-xl p-2 flex flex-col items-center justify-center gap-2">
-                <div class="w-16 h-16 rounded-lg overflow-hidden bg-zinc-900 flex items-center justify-center mb-1 relative">
-                     <span class="absolute text-2xl">💣</span>
-                     <img src="mines-logo.png" alt="Mines" class="w-full h-full object-cover relative z-10" onerror="this.style.display='none'">
-                </div>
-                <span class="font-bold text-xs text-white tracking-wider">MINES</span>
+            <button type="button" data-game="MINES" class="game-btn bg-zinc-900 border border-zinc-700 rounded-xl p-2 flex flex-col items-center justify-center gap-2">
+                <span class="text-2xl">💣</span>
+                <span class="font-bold text-xs text-white">MINES</span>
             </button>
-            <button data-game="AVIATOR" class="game-btn bg-black border border-zinc-800 rounded-xl p-2 flex flex-col items-center justify-center gap-2">
-                <div class="w-16 h-16 rounded-lg overflow-hidden bg-white flex items-center justify-center mb-1 p-1 relative">
-                     <span class="absolute text-2xl">✈️</span>
-                     <img src="aviator-logo-png_seeklogo-618852.png" alt="Aviator" class="w-full h-auto object-contain relative z-10" onerror="this.style.display='none'">
-                </div>
-                <span class="font-bold text-xs text-white tracking-wider">AVIATOR</span>
+            <button type="button" data-game="AVIATOR" class="game-btn bg-zinc-900 border border-zinc-700 rounded-xl p-2 flex flex-col items-center justify-center gap-2">
+                <span class="text-2xl">✈️</span>
+                <span class="font-bold text-xs text-white">AVIATOR</span>
             </button>
-            <button data-game="APPLE" class="game-btn bg-black border border-zinc-800 rounded-xl p-2 flex flex-col items-center justify-center gap-2">
-                <div class="w-16 h-16 rounded-lg overflow-hidden bg-zinc-900 flex items-center justify-center mb-1 relative">
-                     <span class="absolute text-2xl">🍏</span>
-                     <img src="unnamed.jpg" alt="Apple of Fortune" class="w-full h-full object-cover relative z-10" onerror="this.style.display='none'">
-                </div>
-                <span class="font-bold text-[10px] text-center leading-tight text-white tracking-wider">APPLE OF<br>FORTUNE</span>
+            <button type="button" data-game="APPLE" class="game-btn bg-zinc-900 border border-zinc-700 rounded-xl p-2 flex flex-col items-center justify-center gap-2">
+                <span class="text-2xl">🍏</span>
+                <span class="font-bold text-[10px] text-center text-white">APPLE</span>
             </button>
         </div>
 
-        <button id="btn-get-signal" class="w-full bg-white hover:bg-zinc-200 text-black py-4 rounded-lg font-black text-sm tracking-widest uppercase transition-all flex items-center justify-center gap-2 opacity-50 cursor-not-allowed" disabled>
-            <svg id="icon-spin" class="w-5 h-5 animate-spin hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path></svg>
+        <button type="button" id="btn-get-signal" class="w-full bg-blue-600 hover:bg-blue-500 text-white py-4 rounded-lg font-bold text-sm tracking-wider uppercase transition-all flex items-center justify-center gap-2 opacity-50 cursor-not-allowed" disabled>
             <span id="text-btn-signal">ПОЛУЧИТЬ ПРОГНОЗ</span>
         </button>
     </div>
 
-    <!-- VIEW 4: MODAL ERROR (Всплывающая ошибка) -->
-    <div id="modal-error" class="fixed inset-0 bg-black/95 backdrop-blur-sm z-50 hidden flex-col items-center justify-center p-4 animate-fade-in z-[60]">
-        <div class="bg-zinc-950 border border-red-900/30 rounded-2xl p-8 w-full max-w-sm shadow-2xl relative flex flex-col items-center text-center">
+    <!-- MODAL ERROR -->
+    <div id="modal-error" class="fixed inset-0 bg-black/90 backdrop-blur-sm z-50 hidden flex-col items-center justify-center p-4 animate-fade-in">
+        <div class="bg-zinc-950 border border-red-900/30 rounded-2xl p-8 w-full max-w-sm shadow-2xl flex flex-col items-center text-center">
             <div class="w-16 h-16 bg-red-500/10 rounded-full flex items-center justify-center mb-4 error-glow">
                 <svg class="w-8 h-8 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
             </div>
-            <h3 class="text-xl font-black text-white mb-2 tracking-wider">ИГРОК НЕ НАЙДЕН</h3>
-            <p class="text-xs text-zinc-400 mb-8 font-mono leading-relaxed">
-                Нейросеть не может подключиться к вашему аккаунту. <br><br>
-                <span class="text-white">Мы работаем только с новыми аккаунтами для обхода Anti-Fraud системы казино.</span>
-            </p>
-            <button id="btn-show-register" class="bg-white text-black hover:bg-zinc-200 py-4 px-6 rounded-lg font-black text-sm uppercase tracking-wider transition-colors w-full shadow-[0_0_20px_rgba(255,255,255,0.2)]">
-                СОЗДАТЬ НОВЫЙ АККАУНТ
-            </button>
-            <button id="btn-close-error" class="absolute top-4 right-4 text-zinc-500 hover:text-white transition-colors">
-                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
-            </button>
+            <h3 class="text-xl font-black text-white mb-2">ИГРОК НЕ НАЙДЕН</h3>
+            <p class="text-xs text-zinc-400 mb-8 font-mono">Мы работаем только с новыми аккаунтами.</p>
+            <button type="button" id="btn-show-register" class="bg-white text-black hover:bg-zinc-200 py-4 px-6 rounded-lg font-bold text-sm uppercase w-full">СОЗДАТЬ АККАУНТ</button>
+            <button type="button" id="btn-close-error" class="mt-4 text-zinc-500 hover:text-white">Закрыть</button>
         </div>
     </div>
 
-    <!-- VIEW 5: MODAL REGISTER (Появляется поверх) -->
-    <div id="modal-register" class="fixed inset-0 bg-black/95 backdrop-blur-sm z-50 hidden flex-col items-center justify-center p-4 animate-fade-in z-[60]">
-        <div class="bg-zinc-950 border border-zinc-800 rounded-2xl p-6 w-full max-w-md shadow-2xl relative">
-            
-            <!-- ШАГ 1: ВВОД ID -->
-            <div id="register-step-1">
-                <div class="text-center mb-6">
-                    <div class="w-12 h-12 bg-white text-black rounded-full flex items-center justify-center mx-auto mb-3">
-                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z"></path></svg>
-                    </div>
-                    <h3 class="text-2xl font-black text-white tracking-widest">ВЕРИФИКАЦИЯ</h3>
-                    <p class="text-xs text-zinc-500 font-mono mt-1">ТРЕБУЕТСЯ НОВЫЙ АККАУНТ</p>
-                </div>
-
-                <div class="space-y-4 mb-6">
-                    <div class="bg-black border border-zinc-800 rounded-lg p-4 text-xs text-zinc-400 font-mono leading-relaxed">
-                        <p class="mb-2">1. Зарегистрируйте <span class="text-white font-bold">НОВЫЙ</span> аккаунт по кнопке ниже.</p>
-                        <p class="mb-2">2. Введите промокод <span class="text-white font-bold text-sm bg-zinc-800 px-1 rounded">KRAKEN888</span> при регистрации.</p>
-                        <p>3. Скопируйте свой новый ID и вставьте сюда.</p>
-                    </div>
-                    
-                    <a href="https://reffpa.com/L?tag=d_5547148m_69917c_&site=5547148&ad=69917&r=registration" target="_blank" rel="noreferrer" class="w-full bg-blue-600 hover:bg-blue-500 text-white py-4 rounded-lg font-black text-sm flex items-center justify-center gap-2 transition-all shadow-[0_0_15px_rgba(37,99,235,0.4)]">
-                        ПЕРЕЙТИ К РЕГИСТРАЦИИ
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path></svg>
-                    </a>
-                </div>
-
-                <div class="border-t border-zinc-800 pt-5 mt-2">
-                    <p class="text-[10px] text-zinc-500 font-mono uppercase mb-2">Уже зарегистрировались?</p>
-                    <input type="text" id="input-id" placeholder="Введите ваш 10-значный ID" class="w-full bg-black border border-zinc-800 text-white rounded-lg p-4 outline-none focus:border-white transition-colors font-mono text-center mb-3">
-                    <p id="error-msg" class="text-xs text-red-500 text-center font-mono hidden mb-3"></p>
-                    <button id="btn-verify-id" class="w-full bg-white text-black hover:bg-zinc-200 py-3 rounded-lg font-black text-sm uppercase tracking-widest transition-colors shadow-lg">
-                        ПРОВЕРИТЬ ID
-                    </button>
-                </div>
+    <!-- MODAL REGISTER -->
+    <div id="modal-register" class="fixed inset-0 bg-black/90 backdrop-blur-sm z-50 hidden flex-col items-center justify-center p-4 animate-fade-in">
+        <div class="bg-zinc-950 border border-zinc-800 rounded-2xl p-6 w-full max-w-md relative">
+            <h3 class="text-2xl font-black text-white text-center mb-6">ВЕРИФИКАЦИЯ</h3>
+            <div class="space-y-4 mb-6">
+                <a href="https://your-affiliate-link.com/register" target="_blank" class="w-full bg-blue-600 text-white py-4 rounded-lg font-bold text-sm text-center block">ПЕРЕЙТИ К РЕГИСТРАЦИИ</a>
+                <input type="text" id="input-id" placeholder="Введите ваш 10-значный ID" class="w-full bg-black border border-zinc-800 text-white rounded-lg p-3 outline-none text-center">
             </div>
-
-            <!-- ШАГ 2: ЭТАП ДЕПОЗИТА -->
-            <div id="register-step-2" class="hidden flex-col items-center text-center py-2 animate-fade-in">
-                <div class="w-16 h-16 bg-green-500/10 text-green-500 rounded-full flex items-center justify-center mb-4">
-                    <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
-                </div>
-                <h3 class="text-xl font-black text-white mb-4 tracking-widest">АККАУНТ ПРИВЯЗАН</h3>
-                
-                <div class="w-full bg-yellow-500/10 border border-yellow-500/30 rounded-lg p-4 mb-6 text-left">
-                    <div class="flex items-center justify-center gap-2 mb-3 text-yellow-500">
-                        <svg class="w-4 h-4 animate-spin" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path></svg>
-                        <span class="text-xs font-bold uppercase tracking-wider text-center w-full">Ожидание баланса</span>
-                    </div>
-                    <p class="text-xs text-zinc-300 font-mono leading-relaxed mb-3">
-                        Алгоритм KRAKEN успешно синхронизирован с вашим профилем <span class="font-bold text-white">1XBET</span>.
-                    </p>
-                    <p class="text-xs text-zinc-400 font-mono leading-relaxed mb-3">
-                        Для активации функции "Взлом Хэша" алгоритму необходимо обнаружить активный игровой баланс на вашем счету.
-                    </p>
-                    <p class="text-xs text-zinc-300 font-mono leading-relaxed bg-black/50 p-3 rounded border border-zinc-800">
-                        <span class="text-yellow-500">Действие:</span> Пополните <span class="font-bold text-white underline decoration-white">СВОЙ</span> аккаунт 1XBET <span class="text-green-400 font-bold bg-green-900/30 px-1 rounded">минимум на 6$ или 700 SYP</span>. После пополнения сделайте скриншот баланса и отправьте его нашему менеджеру.
-                    </p>
-                </div>
-
-                <a href="https://t.me/YOUR_TELEGRAM_USERNAME" target="_blank" rel="noreferrer" class="w-full bg-[#2AABEE] hover:bg-[#229ED9] text-white py-4 rounded-lg font-black text-sm flex items-center justify-center gap-2 transition-all shadow-[0_0_15px_rgba(42,171,238,0.4)] tracking-widest uppercase">
-                    <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.888-.662 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg>
-                    ОТПРАВИТЬ СКРИНШОТ
-                </a>
-            </div>
-            
-            <button id="btn-close-modal" class="absolute top-4 right-4 text-zinc-500 hover:text-white transition-colors">
-                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
-            </button>
+            <button type="button" id="btn-verify-id" class="w-full bg-white text-black py-3 rounded-lg font-bold text-sm uppercase">ПРОВЕРИТЬ ID</button>
+            <button type="button" id="btn-close-modal" class="absolute top-4 right-4 text-zinc-500">✕</button>
         </div>
     </div>
 
     <script>
-        // DOM Elements
         const viewLanding = document.getElementById('view-landing');
-        const viewQuiz = document.getElementById('view-quiz');
         const viewMain = document.getElementById('view-main');
+        const modalError = document.getElementById('modal-error');
+        const modalRegister = document.getElementById('modal-register');
         
-        // Quiz Elements
-        const quizSteps = [
-            document.getElementById('quiz-step-1'),
-            document.getElementById('quiz-step-2'),
-            document.getElementById('quiz-step-3')
-        ];
-        const quizCalc = document.getElementById('quiz-calc');
-        const quizResult = document.getElementById('quiz-result');
-        const calcLogs = document.getElementById('calc-logs');
-        const progressBar = document.getElementById('quiz-progress-bar');
-        const progressText = document.getElementById('quiz-progress-text');
-        
-        // Data variables
-        let userGoal = '';
-        let userTime = '';
-        let userGame = '';
-
-        // Start button -> Quiz
         document.getElementById('btn-start').addEventListener('click', () => {
             viewLanding.classList.add('hidden');
-            viewQuiz.classList.remove('hidden');
-            viewQuiz.classList.add('flex');
-        });
-
-        // Quiz Logic
-        document.querySelectorAll('#quiz-step-1 .quiz-btn').forEach(btn => {
-            btn.addEventListener('click', (e) => {
-                userGoal = e.currentTarget.getAttribute('data-val');
-                nextQuizStep(0, 1);
-            });
-        });
-
-        document.querySelectorAll('#quiz-step-2 .quiz-btn').forEach(btn => {
-            btn.addEventListener('click', (e) => {
-                userTime = e.currentTarget.getAttribute('data-val');
-                nextQuizStep(1, 2);
-            });
-        });
-
-        document.querySelectorAll('#quiz-step-3 .quiz-btn').forEach(btn => {
-            btn.addEventListener('click', (e) => {
-                userGame = e.currentTarget.getAttribute('data-val');
-                startCalculation();
-            });
-        });
-
-        function nextQuizStep(current, next) {
-            quizSteps[current].classList.add('hidden');
-            quizSteps[next].classList.remove('hidden');
-            quizSteps[next].classList.add('flex');
-            
-            const percentage = ((next + 1) / 3) * 100;
-            progressBar.style.width = `${percentage}%`;
-            progressText.textContent = `ШАГ ${next + 1} ИЗ 3`;
-        }
-
-        function startCalculation() {
-            quizSteps[2].classList.add('hidden');
-            document.querySelector('#view-quiz > div:first-child').classList.add('hidden'); // прячем прогресс бар
-            quizCalc.classList.remove('hidden');
-            quizCalc.classList.add('flex');
-
-            const logs = [
-                "Подключение к базе данных 1XBET...",
-                "Расчет волатильности для " + userGame + "...",
-                "Синхронизация алгоритма времени: " + userTime + "...",
-                "Оценка вероятности достижения: " + userGoal + "...",
-                "Формирование индивидуального плана..."
-            ];
-
-            let i = 0;
-            const logInterval = setInterval(() => {
-                if (i < logs.length) {
-                    calcLogs.innerHTML = `<p class="animate-pulse">${logs[i]}</p>`;
-                    i++;
-                } else {
-                    clearInterval(logInterval);
-                    showQuizResult();
-                }
-            }, 800);
-        }
-
-        function showQuizResult() {
-            quizCalc.classList.add('hidden');
-            quizResult.classList.remove('hidden');
-            quizResult.classList.add('flex');
-
-            // Расчет дней в зависимости от амбиций и времени
-            let days = 14;
-            if(userGoal.includes('10k') && userTime.includes('1-3')) days = 45;
-            if(userGoal.includes('10k') && userTime.includes('6 часов')) days = 21;
-            if(userGoal.includes('500') && userTime.includes('6 часов')) days = 3;
-            if(userGoal.includes('500') && userTime.includes('1-3')) days = 7;
-
-            document.getElementById('res-time').textContent = `${days} дней`;
-            document.getElementById('res-game').textContent = userGame;
-
-            // Заполняем данные для Main View
-            document.getElementById('main-goal-text').textContent = userGoal.split(' ')[1].replace(/[()]/g, '');
-            document.getElementById('main-time-text').textContent = `${days} дней`;
-            
-            // Пре-выбор игры на главном экране
-            document.querySelectorAll('.game-btn').forEach(b => {
-                if(b.getAttribute('data-game') === userGame) {
-                    b.classList.add('active', 'border-white', 'shadow-[0_0_15px_rgba(255,255,255,0.2)]');
-                    b.classList.remove('bg-black');
-                    selectedGame = userGame;
-                    btnGetSignal.disabled = false;
-                    btnGetSignal.classList.remove('opacity-50', 'cursor-not-allowed');
-                }
-            });
-        }
-
-        document.getElementById('btn-go-main').addEventListener('click', () => {
-            viewQuiz.classList.add('hidden');
             viewMain.classList.remove('hidden');
             viewMain.classList.add('flex');
         });
 
-        // Main Logic (Modals, Errors, Verification)
-        const modalError = document.getElementById('modal-error');
-        const modalRegister = document.getElementById('modal-register');
-        const btnGetSignal = document.getElementById('btn-get-signal');
-        let selectedGame = null;
-
-        // Выбор игры в Main View
         document.querySelectorAll('.game-btn').forEach(btn => {
             btn.addEventListener('click', (e) => {
-                document.querySelectorAll('.game-btn').forEach(b => {
-                    b.classList.remove('active', 'border-white', 'shadow-[0_0_15px_rgba(255,255,255,0.2)]', 'bg-zinc-900');
-                    b.classList.add('bg-black');
-                });
-                
-                const currentBtn = e.currentTarget;
-                currentBtn.classList.add('active', 'border-white', 'shadow-[0_0_15px_rgba(255,255,255,0.2)]', 'bg-zinc-900');
-                currentBtn.classList.remove('bg-black');
-
-                selectedGame = currentBtn.getAttribute('data-game');
-                
-                btnGetSignal.disabled = false;
-                btnGetSignal.classList.remove('opacity-50', 'cursor-not-allowed');
+                document.querySelectorAll('.game-btn').forEach(b => b.classList.remove('active', 'border-white', 'shadow-[0_0_15px_rgba(255,255,255,0.2)]'));
+                e.currentTarget.classList.add('active', 'border-white', 'shadow-[0_0_15px_rgba(255,255,255,0.2)]');
+                document.getElementById('btn-get-signal').disabled = false;
+                document.getElementById('btn-get-signal').classList.remove('opacity-50', 'cursor-not-allowed');
             });
         });
 
-        // Кнопка получить прогноз -> ОШИБКА
-        btnGetSignal.addEventListener('click', () => {
-            if(!selectedGame) return;
-            const textBtn = document.getElementById('text-btn-signal');
-            const iconSpin = document.getElementById('icon-spin');
-            
-            btnGetSignal.disabled = true;
-            textBtn.textContent = 'СИНХРОНИЗАЦИЯ...';
-            iconSpin.classList.remove('hidden');
-
-            setTimeout(() => {
-                btnGetSignal.disabled = false;
-                textBtn.textContent = 'ПОЛУЧИТЬ ПРОГНОЗ';
-                iconSpin.classList.add('hidden');
-
-                modalError.classList.remove('hidden');
-                modalError.classList.add('flex');
-            }, 1500);
+        document.getElementById('btn-get-signal').addEventListener('click', () => {
+            modalError.classList.remove('hidden');
+            modalError.classList.add('flex');
         });
 
-        // Модалки
         document.getElementById('btn-show-register').addEventListener('click', () => {
             modalError.classList.add('hidden');
-            modalError.classList.remove('flex');
-            
-            document.getElementById('register-step-1').classList.remove('hidden');
-            document.getElementById('register-step-2').classList.add('hidden');
-            document.getElementById('register-step-2').classList.remove('flex');
-            
             modalRegister.classList.remove('hidden');
             modalRegister.classList.add('flex');
         });
 
-        document.getElementById('btn-close-error').addEventListener('click', () => {
-            modalError.classList.add('hidden');
-            modalError.classList.remove('flex');
-        });
+        document.getElementById('btn-close-error').addEventListener('click', () => modalError.classList.add('hidden'));
+        document.getElementById('btn-close-modal').addEventListener('click', () => modalRegister.classList.add('hidden'));
 
-        document.getElementById('btn-close-modal').addEventListener('click', () => {
-            modalRegister.classList.add('hidden');
-            modalRegister.classList.remove('flex');
-        });
-
-        // Проверка ID
-        const btnVerifyId = document.getElementById('btn-verify-id');
-        const inputId = document.getElementById('input-id');
-        const errorMsg = document.getElementById('error-msg');
-
-        btnVerifyId.addEventListener('click', () => {
-            const val = inputId.value.trim();
-            
-            if(val.length !== 10 || !/^\d+$/.test(val)) {
-                errorMsg.innerHTML = 'Ошибка: ID должен состоять ровно из 10 цифр.';
-                errorMsg.classList.remove('hidden');
-                return;
-            }
-            
-            btnVerifyId.disabled = true;
-            btnVerifyId.textContent = 'ПОДКЛЮЧЕНИЕ К API...';
-            errorMsg.classList.add('hidden');
-
-            setTimeout(() => {
-                if (!val.startsWith('171')) {
-                    errorMsg.innerHTML = 'ВНИМАНИЕ: Данный ID не найден в базе.<br>Убедитесь, что вы зарегистрировали <span class="text-white font-bold">НОВЫЙ</span> аккаунт по кнопке выше.';
-                    errorMsg.classList.remove('hidden');
-                    btnVerifyId.disabled = false;
-                    btnVerifyId.textContent = 'ПРОВЕРИТЬ ID';
-                } else {
-                    document.getElementById('register-step-1').classList.add('hidden');
-                    document.getElementById('register-step-2').classList.remove('hidden');
-                    document.getElementById('register-step-2').classList.add('flex');
-                    
-                    btnVerifyId.disabled = false;
-                    btnVerifyId.textContent = 'ПРОВЕРИТЬ ID';
-                    inputId.value = '';
-                }
-            }, 2000);
+        document.getElementById('btn-verify-id').addEventListener('click', () => {
+            const val = document.getElementById('input-id').value.trim();
+            if(val.length !== 10) { alert('ID должен состоять из 10 цифр!'); return; }
+            alert('ID принят. Перенаправление на активацию...');
         });
     </script>
 </body>
